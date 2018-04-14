@@ -28,6 +28,23 @@
 <body>
   {% include 'partials/header.html' %}
 
+  <div class="container">
+    {% if messages %}
+    <div class="row">
+        <div class="col-lg-12 mx-auto">
+            <div id="message_list">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>{{message.tags|capfirst}}! </strong>{{ message }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+  </div>
+
   {% block content %}
     <p>Default content...</p>
   {% endblock content %}

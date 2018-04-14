@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from .forms import NameForm, PointForm
 from .models import Item, ItemForm, Point
@@ -16,6 +17,8 @@ def index(request):
             "active": "home",
             "items": items
         }
+        if not items:
+            messages.add_message(request, messages.INFO, "Try adding new places with 'Add new'")
         return render(request, 'pages/home.html', context)
     else:
         return redirect('/accounts/login/')
@@ -32,6 +35,7 @@ def add_new(request):
                 lng=form.cleaned_data['lng'],
                 owner=request.user
             )
+            messages.add_message(request, messages.SUCCESS, "New place got saved.")
         return redirect('home')
     else:
         form = PointForm()
@@ -55,6 +59,7 @@ def edit_point(request, id):
             item.lat=form.cleaned_data['lat']
             item.lng=form.cleaned_data['lng']
             item.save()
+            messages.add_message(request, messages.SUCCESS, "Point got edited.")
         return redirect('home')
     else:
         item = Point.objects.get(id=id)
