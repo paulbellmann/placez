@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block css %}
+    <style type="text/css">
+        #mapid {
+            height: 500px;
+        }
+        .asteriskField {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <section class="mb-5">
+        <div class="container">
+            <h1>{{ title }}</h1>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    {% if mode == 'new' %}
+                    <form action="{% url 'add_new' %}" method="post">
+                    {% else %}
+                    <form action="{% url 'edit_point' item.id %}" method="post">
+                    {% endif %}
+
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="button" class="btn btn-primary" onclick="doLocate()">Locate</button>
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div id="mapid"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+
+{% block javascript %}
+    <script>
+    let marker;
+    let mymap;
+
+    $(function() {
+        mymap = L.map('mapid').setView([51.1657, 10.4515], 5);
+
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
+            maxZoom: 18,
+        }).addTo(mymap);
+
+        marker = L.marker([51.1657, 10.4515], {draggable: true}).addTo(mymap);
+
+        marker.on('dragend', (e) => {
+            $('#id_lat').val(marker.getLatLng().lat)
+            $('#id_lng').val(marker.getLatLng().lng)
+        })
+
+        if ($('#id_lng').val() && $('#id_lat').val()) {
+            marker.setLatLng([$('#id_lat').val(), $('#id_lng').val()])
+            mymap.setView([$('#id_lat').val(), $('#id_lng').val()], 15)
+        } else {
+            console.log("empty");
+        }
+    });
+
+    function doLocate() {
+        str = $('#id_street').val()
+        ort = $('#id_city').val()
+        if (str == '' || ort == '') {
+            alert('Straße und Ort muessen angegeben werden');
+            return;
+        }
+
+        var url = "http://nominatim.openstreetmap.org/search?format=json&limit=1&polygon=0&addressdetails=0&q="
+
+        $.ajax({
+            url: url + encodeURI(str) + ',' + encodeURI(ort),
+            success: function(result) {
+                if (result && result[0]) {
+                    console.log(result[0]);
+                    $('#id_lat').val(result[0].lat)
+                    $('#id_lng').val(result[0].lon)
+                    marker.setLatLng([result[0].lat, result[0].lon])
+                    mymap.setView([result[0].lat, result[0].lon], 15)
+                } else {
+                    alert("Adresse nicht gefunden")
+                }
+            }
+        });
+    }
+
+    </script>
+{% endblock %}

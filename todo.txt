@@ -1,0 +1,6 @@
+- add messages for login, saving, editing, alerts
+- default message after login (tutorial)
+- different settings for prod / local (heroku)
+- requirements.txt
+- procfile
+- git
