@@ -58,7 +58,7 @@
         mymap = L.map('mapid').setView([51.1657, 10.4515], 5);
         mymap.addControl(new L.Control.Fullscreen());
 
-        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
             maxZoom: 18,
         }).addTo(mymap);
@@ -86,7 +86,7 @@
             return;
         }
 
-        var url = "http://nominatim.openstreetmap.org/search?format=json&limit=1&polygon=0&addressdetails=0&q="
+        var url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&polygon=0&addressdetails=0&q="
 
         $.ajax({
             url: url + encodeURI(str) + ',' + encodeURI(ort),
