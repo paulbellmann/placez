@@ -1,0 +1,1 @@
+web: gunicorn places.wsgi --log-file -
