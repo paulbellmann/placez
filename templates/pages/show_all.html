@@ -42,6 +42,7 @@
         a = { 
             lat: {{item.lat}},
             lng: {{item.lng}},
+            id: {{item.id}},
             city: '{{item.city}}',
             street: '{{item.street}}'
         }
@@ -50,49 +51,18 @@
 
     $(function() {
         mymap = L.map('mapid').setView([51.1657, 10.4515], 5);
+        mymap.addControl(new L.Control.Fullscreen());
 
-        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        L.tileLayer('http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg', {
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
             maxZoom: 18,
         }).addTo(mymap);
 
-        // marker = L.marker([51.1657, 10.4515], {draggable: true}).addTo(mymap);
-
         for (let i=0; i < marker.length; i++) {
             let a = L.marker([marker[i].lat, marker[i].lng], {draggable: false}).addTo(mymap);
-            a.bindPopup("<b>"+ marker[i].city + "</b><br>" + marker[i].street )
+            a.bindPopup("<b><a href='edit_point/" + marker[i].id + "'>"  + marker[i].city + "</a></b><br>" + marker[i].street)
         }
-
-
-        // marker.setLatLng([$('#id_lat').val(), $('#id_lng').val()])
-        // mymap.setView([$('#id_lat').val(), $('#id_lng').val()], 15)
     });
-
-    function doLocate() {
-        str = $('#id_street').val()
-        ort = $('#id_city').val()
-        if (str == '' || ort == '') {
-            alert('Straße und Ort muessen angegeben werden');
-            return;
-        }
-
-        var url = "http://nominatim.openstreetmap.org/search?format=json&limit=1&polygon=0&addressdetails=0&q="
-
-        $.ajax({
-            url: url + encodeURI(str) + ',' + encodeURI(ort),
-            success: function(result) {
-                if (result && result[0]) {
-                    console.log(result[0]);
-                    $('#id_lat').val(result[0].lat)
-                    $('#id_lng').val(result[0].lon)
-                    marker.setLatLng([result[0].lat, result[0].lon])
-                    mymap.setView([result[0].lat, result[0].lon], 15)
-                } else {
-                    alert("Adresse nicht gefunden")
-                }
-            }
-        });
-    }
 
     </script>
 {% endblock %}

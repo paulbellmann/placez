@@ -54,6 +54,7 @@
 
     $(function() {
         mymap = L.map('mapid').setView([51.1657, 10.4515], 5);
+        mymap.addControl(new L.Control.Fullscreen());
 
         L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
