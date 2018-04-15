@@ -38,7 +38,7 @@ def add_new(request):
                 visited=form.cleaned_data['visited'],
                 owner=request.user
             )
-            messages.add_message(request, messages.SUCCESS, "New place got saved.")
+            messages.add_message(request, messages.SUCCESS, "%s got saved." % form.cleaned_data['title'])
         return redirect('home')
     else:
         form = PointForm()
@@ -64,7 +64,7 @@ def edit_point(request, id):
             item.lng=form.cleaned_data['lng']
             item.visited=form.cleaned_data['visited']
             item.save()
-            messages.add_message(request, messages.SUCCESS, "Point got edited.")
+            messages.add_message(request, messages.SUCCESS, "%s got edited." % form.cleaned_data['title'])
         return redirect('home')
     else:
         item = Point.objects.get(id=id)
