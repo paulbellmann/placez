@@ -1,6 +1,13 @@
-[ ] add messages for login, saving, editing, alerts
-[ ] default message after login (tutorial)
-[ ] different settings for prod / local (heroku)
-[ ] requirements.txt
-[ ] procfile
+[x] add messages for login, saving, editing, alerts
+[x] default message after login (tutorial)
+[x] different settings for prod / local (heroku)
+[x] requirements.txt
+[x] procfile
 [x] add container to all account templates
+[ ] if lat lng empty in object but city and street is there, google lat lang
+[ ] click point without street
+[x] Point name
+[ ] zurück button wenn auf point
+[x] anstatt 14 edge zeigen ob bereits visited oder nicht
+[ ] class based views   
+[ ] punkte löschen können

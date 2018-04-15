@@ -3,6 +3,10 @@
 from django import forms
 
 class PointForm(forms.Form):
+    title = forms.CharField(label='Titel', max_length=100)
+    title.widget.attrs = {
+        'placeholder': 'Mein Ziel',
+    }
     street = forms.CharField(label='Straße', max_length=100)
     street.widget.attrs = {
         'placeholder': 'gewuenschte Strasse',
@@ -11,6 +15,14 @@ class PointForm(forms.Form):
     city.widget.attrs = {
         'placeholder': 'gewuenschte Stadt',
     }
+    visited = forms.TypedChoiceField(
+        label = "Visited?",
+        choices = ((1, "Yes"), (0, "No")),
+        coerce = lambda x: bool(int(x)),
+        widget = forms.RadioSelect,
+        initial = '0',
+        required = True,
+    )
     # postal = forms.IntegerField(label='PLZ')
     lat = forms.CharField(widget=forms.HiddenInput(), required=False)
     lng = forms.CharField(widget=forms.HiddenInput(), required=False)

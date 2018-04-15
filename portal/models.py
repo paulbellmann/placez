@@ -22,9 +22,12 @@ class ItemForm(ModelForm):
 
 
 class Point(models.Model):
+    title = models.CharField(max_length=100)
     street = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     # postal = models.IntegerField()
     lat = models.CharField(max_length=100, blank=True, null=True)
     lng = models.CharField(max_length=100, blank=True, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    visited = models.BooleanField()
+    date = models.DateTimeField(auto_now_add=True)
