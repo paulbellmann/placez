@@ -46,7 +46,7 @@
             lng: {{item.lng}},
             id: {{item.id}},
             city: '{{item.city}}',
-            street: '{{item.street}}'
+            title: '{{item.title}}'
         }
         marker.push(a)
     {% endfor%}
@@ -62,7 +62,7 @@
 
         for (let i=0; i < marker.length; i++) {
             let a = L.marker([marker[i].lat, marker[i].lng], {draggable: false}).addTo(mymap);
-            a.bindPopup("<b><a href='edit_point/" + marker[i].id + "'>"  + marker[i].city + "</a></b><br>" + marker[i].street)
+            a.bindPopup("<b><a href='edit_point/" + marker[i].id + "'>"  + marker[i].title + "</a></b><br>" + marker[i].city)
         }
     });
 
