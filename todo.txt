@@ -18,3 +18,4 @@
 [ ] einheitlich: english oder deutsch
 [ ] landing page
 [ ] icons
+[ ] test for trying to delete other ppl places

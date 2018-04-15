@@ -13,8 +13,8 @@ class Item(models.Model):
     last_name = models.CharField(max_length=100)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return "%s, %s" % (self.last_name, self.first_name)
+    # def __str__(self):
+    #     return "%s, %s" % (self.last_name, self.first_name)
 
 
 class ItemForm(ModelForm):
