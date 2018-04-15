@@ -7,7 +7,7 @@
 [x] if lat lng empty in object but city and street is there, google lat lang
 [x] click point without street
 [x] Point name
-[ ] zurück button wenn auf point
+[x] zurück button wenn auf point
 [x] anstatt 14 edge zeigen ob bereits visited oder nicht
 [x] punkte löschen können
 [x] visited points andere farbe
@@ -18,4 +18,4 @@
 [ ] einheitlich: english oder deutsch
 [ ] landing page
 [ ] icons
-[ ] test for trying to delete other ppl places
+[x] test for trying to delete other ppl places

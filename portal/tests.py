@@ -18,7 +18,6 @@ class PointTest(TestCase):
     def test_correct_title(self):
         wien = Point.objects.get(title='Wien')
         self.assertEqual(wien.title, 'Wien')
-        self.assertEqual(wien.title, 'Wien')
 
 
 class HomeTest(TestCase):
@@ -82,12 +81,12 @@ class DeleteTest(TestCase):
         self.client.login(username='testuserA', password='12345')
         response = self.client.get('/delete/1', follow=True)
         self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, '/portal/')
         self.assertEqual(Point.objects.all().count(), 1) # 1 because we created 2
         self.assertFalse(Point.objects.all().filter(pk=self.pointA.id).exists())
         m = list(response.context['messages'])
         self.assertEqual(len(m), 2) # 2 because index() adds another message
         self.assertEqual(str(m[0]), "Ehksaal got deleted.")
-        self.client.logout()
 
     def test_deleting_not_own(self):
         self.client.login(username='testuserB', password='12345')
@@ -146,10 +145,12 @@ class AddPointTest(TestCase):
     def test_adding_point_post(self):
         response = self.client.post('/add_new', {'title': 'Arbeit', 'city': 'Lübeck', 'visited': '1'}, follow=True)
         self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, '/portal/')
         m = response.context['messages']
         m = list(response.context['messages'])
         self.assertEqual(len(m), 1)
         self.assertEqual(str(m[0]), "Arbeit got saved.")
+        self.assertTrue("Arbeit got" in str(m[0]))
         self.assertEqual(Point.objects.get(id=1).title, 'Arbeit')
 
     def test_adding_point_get(self):
