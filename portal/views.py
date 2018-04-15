@@ -68,7 +68,7 @@ def edit_point(request, id):
         return redirect('home')
     else:
         item = Point.objects.get(id=id)
-        form = PointForm({'title':item.title, 'street':item.street, 'city':item.city,
+        form = PointForm(initial={'title':item.title, 'street':item.street, 'city':item.city,
             'lat':item.lat, 'lng':item.lng, 'visited':int(item.visited)})
         context = {
             "form": form,
@@ -88,3 +88,11 @@ def show_all(request):
         "items": items
     }
     return render(request, 'pages/show_all.html', context)
+
+
+@login_required
+def delete(request, id):
+    if request.user.point_set.filter(pk=id).exists():
+        point = Point.objects.get(pk=id).delete()
+        messages.add_message(request, messages.SUCCESS, "Point got deleted.")
+    return redirect('home')

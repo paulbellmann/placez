@@ -30,8 +30,8 @@
 
                         {% csrf_token %}
                         {{ form|crispy }}
-                        <button id="locate" type="button" class="btn btn-primary">Locate</button>
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <button id="locate" type="button" class="btn btn-primary">locate</button>
+                        <button type="submit" class="btn btn-success">save</button>
                     </form>
                 </div>
             </div>
@@ -43,6 +43,16 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div id="mapid"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <button id="delete" type="button" class="btn btn-sm btn-danger float-right">delete</button>
                 </div>
             </div>
         </div>
@@ -78,6 +88,10 @@
             doLocate($('#id_street').val(), $('#id_city').val())
         })
 
+        $('#delete').on('click', (e) => {
+            doDelete()
+        })
+
         if ($('#id_lng').val() && $('#id_lat').val()) {
             marker.setLatLng([$('#id_lat').val(), $('#id_lng').val()])
             mymap.setView([$('#id_lat').val(), $('#id_lng').val()], 15)
@@ -95,7 +109,6 @@
             url: url + encodeURI(lat) + '&lon=' + encodeURI(lng),
             success: function(result) {
                 if (result) {
-                    console.log(result);
                     $('#id_street').val(result.address.road)
                     $('#id_city').val(result.address.town || result.address.village || result.address.city || result.address.state)
                 } else {
@@ -128,5 +141,12 @@
             }
         });
     }
+
+    function doDelete() {
+        if (confirm("Are you sure?")) {
+            window.location = "{% url 'delete' item.id %}"
+        }
+    } 
+
     </script>
 {% endblock %}
