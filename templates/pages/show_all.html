@@ -40,13 +40,32 @@
     let mymap;
     let marker = [];
 
+    const blueIcon = new L.Icon({
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+
+    const redIcon = new L.Icon({
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+
     {% for item in items %}
         a = { 
             lat: {{item.lat}},
             lng: {{item.lng}},
             id: {{item.id}},
             city: '{{item.city}}',
-            title: '{{item.title}}'
+            title: '{{item.title}}',
+            color: {{item.color}}
         }
         marker.push(a)
     {% endfor%}
@@ -55,13 +74,13 @@
         mymap = L.map('mapid').setView([51.1657, 10.4515], 5);
         mymap.addControl(new L.Control.Fullscreen());
 
-        L.tileLayer('http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg', {
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
             maxZoom: 18,
         }).addTo(mymap);
 
         for (let i=0; i < marker.length; i++) {
-            let a = L.marker([marker[i].lat, marker[i].lng], {draggable: false}).addTo(mymap);
+            let a = L.marker([marker[i].lat, marker[i].lng], {draggable: false, icon: marker[i].color}).addTo(mymap);
             a.bindPopup("<b><a href='edit_point/" + marker[i].id + "'>"  + marker[i].title + "</a></b><br>" + marker[i].city)
         }
     });
