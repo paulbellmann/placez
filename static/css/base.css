@@ -1,0 +1,14 @@
+.nice {
+    padding: 4rem;
+    border-radius: 3px;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05);
+    background-color: #FFFFFF
+}
+
+.asteriskField {
+    display: none;
+}
+
+body {
+    background-color: #F9F9F9;
+}

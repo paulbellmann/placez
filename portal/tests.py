@@ -6,9 +6,11 @@ from django.test import TestCase
 from .models import Point
 from django.contrib.auth.models import User
 
+
 # Create your tests here.
 class PointTest(TestCase):
     """Creating and retrieving a Point"""
+
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='12345')
         self.point = Point.objects.create(title='Arbeit', visited=True, owner=self.user)
@@ -20,6 +22,7 @@ class PointTest(TestCase):
 
 class HomeTest(TestCase):
     """Creating Acc, login, point creating / retrieving multiple"""
+
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='12345')
         self.client.login(username='testuser', password='12345')
@@ -38,6 +41,7 @@ class HomeTest(TestCase):
 
 class DetailViewTest(TestCase):
     """Creating Acc, login, point creating / retrieving single"""
+
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='12345')
         self.client.login(username='testuser', password='12345')
@@ -52,6 +56,7 @@ class DetailViewTest(TestCase):
 
 class DeleteTest(TestCase):
     """Creating Acc, login, point creating / and deleting"""
+
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='12345')
         self.client.login(username='testuser', password='12345')

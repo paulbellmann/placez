@@ -15,3 +15,6 @@
 [ ] auswählbare icons https://github.com/jseppi/Leaflet.MakiMarkers
 [x] tests schreiben
 [ ] better greetings if new user
+[ ] einheitlich: english oder deutsch
+[ ] landing page
+[ ] icons

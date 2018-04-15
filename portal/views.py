@@ -5,10 +5,13 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from .forms import NameForm, PointForm
-from .models import Item, ItemForm, Point
+from .forms import PointForm
+from .models import Point
+
 
 # Create your views here.
+
+
 def index(request):
     if request.user.is_authenticated:
         items = Point.objects.all().filter(owner=request.user).order_by('-date')
@@ -18,7 +21,8 @@ def index(request):
             "items": items
         }
         if not items:
-            messages.add_message(request, messages.INFO, "Try adding new places with 'Add new'")
+            messages.add_message(request, messages.INFO,
+                                 "Try adding new places with 'Add new'")
         return render(request, 'pages/home.html', context)
     else:
         return redirect('/accounts/login/')
@@ -57,19 +61,19 @@ def edit_point(request, id):
         form = PointForm(request.POST)
         if form.is_valid() and request.user.point_set.filter(pk=id).exists():
             item = Point.objects.get(pk=id)
-            item.title=form.cleaned_data['title']
-            item.street=form.cleaned_data['street']
-            item.city=form.cleaned_data['city']
-            item.lat=form.cleaned_data['lat']
-            item.lng=form.cleaned_data['lng']
-            item.visited=form.cleaned_data['visited']
+            item.title = form.cleaned_data['title']
+            item.street = form.cleaned_data['street']
+            item.city = form.cleaned_data['city']
+            item.lat = form.cleaned_data['lat']
+            item.lng = form.cleaned_data['lng']
+            item.visited = form.cleaned_data['visited']
             item.save()
             messages.add_message(request, messages.SUCCESS, "%s got edited." % form.cleaned_data['title'])
         return redirect('home')
     else:
         item = Point.objects.get(id=id)
-        form = PointForm(initial={'title':item.title, 'street':item.street, 'city':item.city,
-            'lat':item.lat, 'lng':item.lng, 'visited':int(item.visited)})
+        form = PointForm(initial={'title': item.title, 'street': item.street, 'city': item.city,
+                                  'lat': item.lat, 'lng': item.lng, 'visited': int(item.visited)})
         context = {
             "form": form,
             "item": item,
@@ -95,5 +99,6 @@ def delete(request, id):
     if request.user.point_set.filter(pk=id).exists():
         point = Point.objects.get(pk=id)
         point.delete()
-        messages.add_message(request, messages.SUCCESS, "%s got deleted." % point.title)
+        messages.add_message(request, messages.SUCCESS,
+                             "%s got deleted." % point.title)
     return redirect('home')

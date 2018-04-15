@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 
 # Create your models here.
+
+
 class Item(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
