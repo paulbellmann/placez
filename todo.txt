@@ -13,4 +13,4 @@
 [x] visited points andere farbe
 [x] andere tiles für show all
 [ ] auswählbare icons https://github.com/jseppi/Leaflet.MakiMarkers
-[ ] tests schreiben
+[x] tests schreiben

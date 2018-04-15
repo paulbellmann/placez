@@ -21,7 +21,7 @@
             <h1>{{ title }}</h1>
 
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     {% if mode == 'new' %}
                     <form action="{% url 'add_new' %}" method="post">
                     {% else %}
@@ -30,8 +30,8 @@
 
                         {% csrf_token %}
                         {{ form|crispy }}
-                        <button id="locate" type="button" class="btn btn-primary">locate</button>
-                        <button type="submit" class="btn btn-success">save</button>
+                        <button id="locate" type="button" class="btn btn-sm btn-outline-primary">locate</button>
+                        <button type="submit" class="btn btn-sm btn-outline-success">save</button>
                     </form>
                 </div>
             </div>
@@ -41,7 +41,7 @@
     <section class="mb-5">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <div id="mapid"></div>
                 </div>
             </div>
@@ -51,7 +51,8 @@
     <section class="mb-5">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
+                    <a href="{% url 'home' %}" class="btn btn-sm btn-warning float-left">back</a>
                     <button id="delete" type="button" class="btn btn-sm btn-danger float-right">delete</button>
                 </div>
             </div>
