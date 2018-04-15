@@ -93,6 +93,7 @@ def show_all(request):
 @login_required
 def delete(request, id):
     if request.user.point_set.filter(pk=id).exists():
-        point = Point.objects.get(pk=id).delete()
-        messages.add_message(request, messages.SUCCESS, "Point got deleted.")
+        point = Point.objects.get(pk=id)
+        point.delete()
+        messages.add_message(request, messages.SUCCESS, "%s got deleted." % point.title)
     return redirect('home')

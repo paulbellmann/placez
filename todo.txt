@@ -14,3 +14,4 @@
 [x] andere tiles für show all
 [ ] auswählbare icons https://github.com/jseppi/Leaflet.MakiMarkers
 [x] tests schreiben
+[ ] better greetings if new user
