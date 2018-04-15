@@ -30,7 +30,7 @@
 
                         {% csrf_token %}
                         {{ form|crispy }}
-                        <button type="button" class="btn btn-primary" onclick="doLocate()">Locate</button>
+                        <button id="locate" type="button" class="btn btn-primary">Locate</button>
                         <button type="submit" class="btn btn-success">Save</button>
                     </form>
                 </div>
@@ -65,28 +65,53 @@
 
         marker = L.marker([51.1657, 10.4515], {draggable: true}).addTo(mymap);
 
+        mymap.on('click', (e) => {
+            marker.setLatLng([e.latlng.lat, e.latlng.lng])
+            doReverseLocate(e.latlng.lat, e.latlng.lng)
+        })
+
         marker.on('dragend', (e) => {
-            $('#id_lat').val(marker.getLatLng().lat)
-            $('#id_lng').val(marker.getLatLng().lng)
+            doReverseLocate(marker.getLatLng().lat, marker.getLatLng().lng)
+        })
+
+        $('#locate').on('click', (e) => {
+            doLocate($('#id_street').val(), $('#id_city').val())
         })
 
         if ($('#id_lng').val() && $('#id_lat').val()) {
             marker.setLatLng([$('#id_lat').val(), $('#id_lng').val()])
             mymap.setView([$('#id_lat').val(), $('#id_lng').val()], 15)
-        } else {
-            console.log("empty");
         }
     });
 
-    function doLocate() {
-        str = $('#id_street').val()
-        ort = $('#id_city').val()
-        if (str == '' || ort == '') {
+
+    function doReverseLocate(lat, lng) {
+        $('#id_lat').val(lat)
+        $('#id_lng').val(lng)
+
+        let url = "https://nominatim.openstreetmap.org/reverse?format=json&zoom=18&addressdetails=1&lat="
+
+        $.ajax({
+            url: url + encodeURI(lat) + '&lon=' + encodeURI(lng),
+            success: function(result) {
+                if (result) {
+                    console.log(result);
+                    $('#id_street').val(result.address.road)
+                    $('#id_city').val(result.address.town || result.address.village || result.address.city || result.address.state)
+                } else {
+                    alert("Adresse nicht gefunden")
+                }
+            }
+        })
+    }
+
+    function doLocate(str, ort) {
+        if ( ort == '') {
             alert('Straße und Ort muessen angegeben werden');
             return;
         }
 
-        var url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&polygon=0&addressdetails=0&q="
+        let url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&polygon=0&addressdetails=0&q="
 
         $.ajax({
             url: url + encodeURI(str) + ',' + encodeURI(ort),
@@ -103,6 +128,5 @@
             }
         });
     }
-
     </script>
 {% endblock %}

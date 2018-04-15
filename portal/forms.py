@@ -7,7 +7,7 @@ class PointForm(forms.Form):
     title.widget.attrs = {
         'placeholder': 'Mein Ziel',
     }
-    street = forms.CharField(label='Straße', max_length=100)
+    street = forms.CharField(label='Straße', max_length=100, required=False)
     street.widget.attrs = {
         'placeholder': 'gewuenschte Strasse',
     }

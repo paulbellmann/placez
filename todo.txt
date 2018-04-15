@@ -11,5 +11,6 @@
 [x] anstatt 14 edge zeigen ob bereits visited oder nicht
 [ ] class based views   
 [ ] punkte löschen können
-[ ] visited points andere farbe
+[x] visited points andere farbe
 [ ] andere tiles für show all
+[ ] auswählbare icons https://github.com/jseppi/Leaflet.MakiMarkers
