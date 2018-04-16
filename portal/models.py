@@ -36,6 +36,6 @@ class Point(models.Model):
 
     def color(self):
         if self.visited:
-            return "redIcon"
+            return "greenIcon"
         else:
-            return "blueIcon"
+            return "redIcon"
