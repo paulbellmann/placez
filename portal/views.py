@@ -80,7 +80,10 @@ def edit_point(request, id):
             "title": "Edit Point",
             "mode": "edit",
         }
-        return render(request, 'pages/point.html', context)
+        if request.user.point_set.filter(pk=id).exists():
+            return render(request, 'pages/point.html', context)
+        else:
+            return redirect('home')
 
 
 @login_required
