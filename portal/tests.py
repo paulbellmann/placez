@@ -7,6 +7,11 @@ from .models import Point
 from django.contrib.auth.models import User
 
 
+def create_and_login(self):
+    User.objects.create_user(username='testuser', password='12345')
+    return self.client.login(username='testuser', password='12345')
+
+
 # Create your tests here.
 class PointTest(TestCase):
     """Creating and retrieving a Point"""
@@ -44,8 +49,7 @@ class NewUserTest(TestCase):
     """Creating Acc and loggin in, testing messages"""
 
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='12345')
-        self.client.login(username='testuser', password='12345')
+        create_and_login(self)
 
     def test_message_after_registration(self):
         response = self.client.get('/')
@@ -82,10 +86,10 @@ class DeleteTest(TestCase):
         response = self.client.get('/delete/1', follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, '/portal/')
-        self.assertEqual(Point.objects.all().count(), 1) # 1 because we created 2
+        self.assertEqual(Point.objects.all().count(), 1)  # 1 because we created 2
         self.assertFalse(Point.objects.all().filter(pk=self.pointA.id).exists())
         m = list(response.context['messages'])
-        self.assertEqual(len(m), 2) # 2 because index() adds another message
+        self.assertEqual(len(m), 2)  # 2 because index() adds another message
         self.assertEqual(str(m[0]), "Ehksaal got deleted.")
 
     def test_deleting_not_own(self):
@@ -120,33 +124,43 @@ class EditPointTest(TestCase):
         self.user = User.objects.create_user(username='testuser', password='12345')
         self.client.login(username='testuser', password='12345')
         self.point = Point.objects.create(title='Monaco', visited=True, owner=self.user)
+        self.client.logout()
+
+        self.userB = User.objects.create_user(username='testuserB', password='12345')
+        self.client.login(username='testuserB', password='12345')
+        self.pointB = Point.objects.create(title='Sühlen', visited=True, owner=self.userB)
+        self.client.logout()
 
     def test_editing_point_post(self):
+        self.client.login(username='testuser', password='12345')
         response = self.client.post('/edit_point/1', {'title': 'Hamburg', 'city': 'Hamburg', 'visited': '1'})
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Point.objects.get(id=1).title, 'Hamburg')
         self.assertEqual(Point.objects.get(id=1).city, 'Hamburg')
 
     def test_editing_point_get(self):
+        self.client.login(username='testuser', password='12345')
         response = self.client.get('/edit_point/1')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Monaco')
         self.assertEqual(response.context['item'], self.point)
 
+    def test_editing_point_from_other_user(self):
+        self.client.login(username='testuserB', password='12345')
+        response = self.client.get('/edit_point/1')
+        self.assertRedirects(response, '/portal/')
 
 
 class AddPointTest(TestCase):
     """Creating Acc, login, point creating a point"""
 
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='12345')
-        self.client.login(username='testuser', password='12345')
+        create_and_login(self)
 
     def test_adding_point_post(self):
         response = self.client.post('/add_new', {'title': 'Arbeit', 'city': 'Lübeck', 'visited': '1'}, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, '/portal/')
-        m = response.context['messages']
         m = list(response.context['messages'])
         self.assertEqual(len(m), 1)
         self.assertEqual(str(m[0]), "Arbeit got saved.")
