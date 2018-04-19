@@ -47,21 +47,18 @@
     <script>
         $(function () {
             $('#search').on('keyup', function () {
-                var current_query = $('#search').val();
-                if (current_query !== "") {
-                    $(".list-group > a").hide();
-                    $(".list-group > a").each(function () {
-                        var current_keyword = $(this).text();
-                        if (current_keyword.indexOf(current_query) >= 0) {
-                            $(this).show();
-                        }
-                        ;
-                    });
-                } else {
-                    $(".list-group li").show();
-                }
-                ;
-            });
+                var filter = $('#search').val().toLowerCase()
+
+                $(".list-group > a").each(function () {
+                    var current_keyword = $(this).text().toLowerCase()
+
+                    if (current_keyword.indexOf(filter) > -1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide()
+                    }
+                })
+            })
         });
     </script>
 {% endblock %}
