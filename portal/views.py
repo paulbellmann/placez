@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, HttpResponse, redirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -14,7 +15,19 @@ from .models import Point
 
 def index(request):
     if request.user.is_authenticated:
-        items = Point.objects.all().filter(owner=request.user).order_by('-date')
+        item_list = Point.objects.all().filter(owner=request.user).order_by('-date')
+        paginator = Paginator(item_list, 5) # Show 5 contacts per page
+
+        page = request.GET.get('page')
+        try:
+            items = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            items = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            items = paginator.page(paginator.num_pages)
+
         context = {
             "title": "Home",
             "active": "home",
@@ -26,6 +39,22 @@ def index(request):
         return render(request, 'pages/home.html', context)
     else:
         return redirect('/accounts/login/')
+
+def listing(request):
+    contact_list = Contacts.objects.all()
+    paginator = Paginator(contact_list, 25) # Show 25 contacts per page
+
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+
+    return render(request, 'list.html', {'contacts': contacts})
 
 
 @login_required
