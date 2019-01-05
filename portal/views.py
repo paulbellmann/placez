@@ -59,8 +59,8 @@ def add_new(request):
 def edit_point(request, id):
     if request.method == 'POST':
         form = PointForm(request.POST)
-        if form.is_valid() and request.user.point_set.filter(pk=id).exists():
-            item = Point.objects.get(pk=id)
+        item = Point.objects.get(pk=id)
+        if form.is_valid() and item.owner == request.user:
             item.title = form.cleaned_data['title']
             item.street = form.cleaned_data['street']
             item.city = form.cleaned_data['city']
@@ -80,7 +80,7 @@ def edit_point(request, id):
             "title": "Edit Point",
             "mode": "edit",
         }
-        if request.user.point_set.filter(pk=id).exists():
+        if item.owner == request.user:
             return render(request, 'pages/point.html', context)
         else:
             return redirect('home')
@@ -99,8 +99,9 @@ def show_all(request):
 
 @login_required
 def delete(request, id):
-    if request.user.point_set.filter(pk=id).exists():
-        point = Point.objects.get(pk=id)
+    point = Point.objects.get(pk=id)
+    # if request.user.point_set.filter(pk=id).exists():
+    if point.owner == request.user:
         point.delete()
         messages.add_message(request, messages.SUCCESS,
                              "%s got deleted." % point.title)
