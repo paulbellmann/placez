@@ -23,3 +23,5 @@
                      https://www.w3schools.com/howto/howto_js_filter_lists.asp,
                      http://fusejs.io/)
 [ ] update README.md
+[ ] sharing function https://developers.google.com/web/updates/2016/09/navigator-share
+[ ] meta tags https://github.com/thedaviddias/Front-End-Checklist
