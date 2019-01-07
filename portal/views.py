@@ -15,9 +15,14 @@ from .models import Point
 
 def index(request):
     if request.user.is_authenticated:
-        item_list = Point.objects.all().filter(owner=request.user).order_by('-date')
-        paginator = Paginator(item_list, 5) # Show 5 contacts per page
+        # search
+        q = request.GET.get('q')
+        if q:
+            item_list = Point.objects.all().filter(owner=request.user, title=q).order_by('-date')
+        else:
+            item_list = Point.objects.all().filter(owner=request.user).order_by('-date')
 
+        paginator = Paginator(item_list, 5) # Show 5 contacts per page
         page = request.GET.get('page')
         try:
             items = paginator.page(page)
