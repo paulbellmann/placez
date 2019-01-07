@@ -7,13 +7,15 @@ class PointForm(forms.Form):
     title.widget.attrs = {
         'placeholder': 'Mein Ziel',
     }
+    city = forms.CharField(
+        label='Stadt', 
+        max_length=100, 
+        widget=forms.TextInput(attrs={'placeholder': 'gewuenschte Stadt'})
+    )
+
     street = forms.CharField(label='Straße', max_length=100, required=False)
     street.widget.attrs = {
         'placeholder': 'gewuenschte Strasse',
-    }
-    city = forms.CharField(label='Stadt', max_length=100)
-    city.widget.attrs = {
-        'placeholder': 'gewuenschte Stadt',
     }
     visited = forms.TypedChoiceField(
         label = "Visited?",
