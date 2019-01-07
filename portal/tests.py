@@ -51,6 +51,13 @@ class HomeTest(TestCase):
         self.assertContains(response, 'wanted')
         self.assertEqual(len(response.context['items']), 1)
 
+    def test_home_with_search_no_hits(self):
+        response = self.client.get('/?q=blablalbla')
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'Sühlen')
+        self.assertContains(response, 'Nothing found.')
+        self.assertEqual(len(response.context['items']), 0)
+
 
 class NewUserTest(TestCase):
     """Creating Acc and loggin in, testing messages"""

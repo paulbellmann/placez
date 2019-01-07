@@ -45,9 +45,14 @@ def index(request):
             "active": "home",
             "items": items
         }
-        if not items:
-            messages.add_message(request, messages.INFO,
-                                 "Try adding new places with 'Add new'")
+
+        # wenn keine items und keine suche
+        if not items and not q:
+            messages.add_message(request, messages.INFO, "Try adding new places with 'Add new'")
+        # wenn keine items und suche
+        if not items and q:
+            messages.add_message(request, messages.INFO, "Nothing found.")
+
         return render(request, 'pages/home.html', context)
     else:
         return redirect('/accounts/login/')
