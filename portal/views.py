@@ -51,7 +51,7 @@ def index(request):
             messages.add_message(request, messages.INFO, "Try adding new places with 'Add new'")
         # wenn keine items und suche
         if not items and q:
-            messages.add_message(request, messages.INFO, "Nothing found.")
+            messages.add_message(request, messages.WARNING, "Nothing found.")
 
         return render(request, 'pages/home.html', context)
     else:
