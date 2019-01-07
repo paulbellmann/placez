@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-lg-12 mb-3 mb-lg-4">
                     <form action="/">
-                        <input class="form-control form-control-lg mb-4" type="text" placeholder="Search by name, city or tag..." id="search" name="q" value="{{ request.GET.q }}">
+                        <input class="form-control form-control-lg mb-4" type="text" placeholder="Search by title, street or city..." id="search" name="q" value="{{ request.GET.q }}">
                     </form>
                     <ul class="list-group">
                         {% for item in items %}
@@ -71,21 +71,4 @@
 {% endblock content %}
 
 {% block javascript %}
-    <script>
-        $(function () {
-            $('#search').on('keyup', function () {
-                var filter = $('#search').val().toLowerCase()
-
-                $(".list-group > a").each(function () {
-                    var current_keyword = $(this).text().toLowerCase()
-
-                    if (current_keyword.indexOf(filter) > -1) {
-                        $(this).show();
-                    } else {
-                        $(this).hide()
-                    }
-                })
-            })
-        });
-    </script>
 {% endblock %}
