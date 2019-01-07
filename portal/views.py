@@ -22,6 +22,7 @@ def index(request):
         else:
             item_list = Point.objects.all().filter(owner=request.user).order_by('-date')
 
+        # paginator
         paginator = Paginator(item_list, 5) # Show 5 contacts per page
         page = request.GET.get('page')
         try:
@@ -117,7 +118,7 @@ def show_all(request):
 
 @login_required
 def delete(request, id):
-    point = Point.objects.get(pk=id)
+    point = get_object_or_404(Point, id=id)
     # if request.user.point_set.filter(pk=id).exists():
     if point.owner == request.user:
         point.delete()
