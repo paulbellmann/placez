@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -89,7 +89,7 @@ def edit_point(request, id):
             messages.add_message(request, messages.SUCCESS, "%s got edited." % form.cleaned_data['title'])
         return redirect('home')
     else:
-        item = Point.objects.get(id=id)
+        item = get_object_or_404(Point, id=id)
         form = PointForm(initial={'title': item.title, 'street': item.street, 'city': item.city,
                                   'lat': item.lat, 'lng': item.lng, 'visited': int(item.visited)})
         context = {

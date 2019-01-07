@@ -152,6 +152,11 @@ class EditPointTest(TestCase):
         response = self.client.get('/edit_point/1')
         self.assertRedirects(response, '/portal/')
 
+    def test_404(self):
+        self.client.login(username='testuser', password='12345')
+        response = self.client.get('/edit_point/1337')
+        self.assertEqual(response.status_code, 404)
+
 
 class AddPointTest(TestCase):
     """Creating Acc, login, point creating a point"""
