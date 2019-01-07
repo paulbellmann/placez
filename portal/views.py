@@ -5,6 +5,7 @@ from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Q
 
 from .forms import PointForm
 from .models import Point
@@ -15,13 +16,17 @@ from .models import Point
 
 def index(request):
     if request.user.is_authenticated:
+        item_list = Point.objects.all().filter(owner=request.user).order_by('-date')
+
         # search
         q = request.GET.get('q')
         if q:
             # case-insensitive match 
-            item_list = Point.objects.all().filter(owner=request.user, title__icontains=q).order_by('-date')
-        else:
-            item_list = Point.objects.all().filter(owner=request.user).order_by('-date')
+            item_list = item_list.filter(
+                Q(title__icontains=q) |
+                Q(street__icontains=q) |
+                Q(city__icontains=q)
+            ).distinct()
 
         # paginator
         paginator = Paginator(item_list, 5) # Show 5 contacts per page
