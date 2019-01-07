@@ -18,7 +18,8 @@ def index(request):
         # search
         q = request.GET.get('q')
         if q:
-            item_list = Point.objects.all().filter(owner=request.user, title=q).order_by('-date')
+            # case-insensitive match 
+            item_list = Point.objects.all().filter(owner=request.user, title__icontains=q).order_by('-date')
         else:
             item_list = Point.objects.all().filter(owner=request.user).order_by('-date')
 
