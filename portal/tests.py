@@ -7,9 +7,10 @@ from .models import Point
 from django.contrib.auth.models import User
 
 
-def create_and_login(self):
-    User.objects.create_user(username='testuser', password='12345')
-    return self.client.login(username='testuser', password='12345')
+def create_and_login(self, name='testuser', pw='12345'):
+    user = User.objects.create_user(username=name, password=pw)
+    self.client.login(username='testuser', password='12345')
+    return user
 
 
 # Create your tests here.
@@ -29,10 +30,9 @@ class HomeTest(TestCase):
     """point creating / retrieving multiple"""
 
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='12345')
-        self.client.login(username='testuser', password='12345')
-        self.pointA = Point.objects.create(title='Zu hauße', visited=True, owner=self.user)
-        self.pointB = Point.objects.create(title='Sühlen', visited=False, owner=self.user)
+        user = create_and_login(self)
+        self.pointA = Point.objects.create(title='Zu hauße', visited=True, owner=user)
+        self.pointB = Point.objects.create(title='Sühlen', visited=False, owner=user)
 
     def test_home_displays_data(self):
         response = self.client.get('/')
@@ -78,14 +78,12 @@ class DeleteTest(TestCase):
     """deleting a point"""
 
     def setUp(self):
-        self.userA = User.objects.create_user(username='testuserA', password='12345')
-        self.client.login(username='testuserA', password='12345')
-        self.pointA = Point.objects.create(title='Ehksaal', visited=True, owner=self.userA)
+        userA = create_and_login(self, name='testuserA')
+        self.pointA = Point.objects.create(title='Ehksaal', visited=True, owner=userA)
         self.client.logout()
 
-        self.userB = User.objects.create_user(username='testuserB', password='12345')
-        self.client.login(username='testuserB', password='12345')
-        self.pointB = Point.objects.create(title='Sühlen', visited=True, owner=self.userB)
+        userB = create_and_login(self, name='testuserB')
+        self.pointB = Point.objects.create(title='Sühlen', visited=True, owner=userB)
         self.client.logout()
 
     def test_deleting_own(self):
@@ -93,7 +91,7 @@ class DeleteTest(TestCase):
         response = self.client.get('/delete/1', follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, '/portal/')
-        self.assertEqual(Point.objects.all().count(), 1)  # 1 because we created 2
+        self.assertEqual(Point.objects.all().count(), 1)  # 1 because we created 2 and deleting 1
         self.assertFalse(Point.objects.all().filter(pk=self.pointA.id).exists())
         m = list(response.context['messages'])
         self.assertEqual(len(m), 2)  # 2 because index() adds another message
@@ -111,10 +109,9 @@ class ShowAllTest(TestCase):
     """showing all points in a big map"""
 
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='12345')
-        self.client.login(username='testuser', password='12345')
-        self.pointA = Point.objects.create(title='Monaco', visited=True, owner=self.user)
-        self.pointB = Point.objects.create(title='Marbella', visited=False, owner=self.user)
+        user = create_and_login(self)
+        self.pointA = Point.objects.create(title='Monaco', visited=True, owner=user)
+        self.pointB = Point.objects.create(title='Marbella', visited=False, owner=user)
 
     def test_show_all_map(self):
         response = self.client.get('/show_all')
@@ -128,14 +125,12 @@ class EditPointTest(TestCase):
     """Editing a point and saving it"""
 
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='12345')
-        self.client.login(username='testuser', password='12345')
-        self.point = Point.objects.create(title='Monaco', visited=True, owner=self.user)
+        user = create_and_login(self, name='testuser')
+        self.point = Point.objects.create(title='Monaco', visited=True, owner=user)
         self.client.logout()
 
-        self.userB = User.objects.create_user(username='testuserB', password='12345')
-        self.client.login(username='testuserB', password='12345')
-        self.pointB = Point.objects.create(title='Sühlen', visited=True, owner=self.userB)
+        userB = create_and_login(self, name='testuserB')
+        self.pointB = Point.objects.create(title='Sühlen', visited=True, owner=userB)
         self.client.logout()
 
     def test_editing_point_post(self):
