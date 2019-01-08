@@ -10,13 +10,14 @@
 {#    <div class="jumbotron d-flex align-items-center">#}
 <div class="container">
     <div class="row">
-        <div class="col-lg-6 mx-auto my-5 my-lg-3">
+        <div class="col-lg-6 mx-auto my-4 my-lg-5">
           <div class="nice p-4 p-md-5">
-            <h2>Log in</h2>
+            <h2 class="text-center">Log in to your Account</h2>
+            <p class="text-center">Enter your <b>username</b> and <b>password</b>.</p>
             <form method="post">
               {% csrf_token %}
               {{ form|crispy }}
-              <button class="btn btn-success" type="submit">Log in</button>
+              <button class="btn btn-success btn-lg mb-3 go_button" type="submit">Log in</button>
             </form>
             <a href="{% url 'account_reset_password' %}" class="float-right">Forgot Password?</a>
             </div>

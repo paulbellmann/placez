@@ -6,13 +6,13 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-lg-6 mx-auto my-2 my-lg-3">
+        <div class="col-lg-6 mx-auto my-4 my-lg-5">
           <div class="nice p-4 p-md-5">
-            <h2>Sign up</h2>
+            <h2 class="text-center">Sign up</h2>
             <form method="post">
               {% csrf_token %}
               {{ form|crispy }}
-              <button class="btn btn-success" type="submit">Sign up</button>
+              <button class="btn btn-success btn-lg go_button" type="submit">Sign up</button>
             </form>
             </div>
         </div>

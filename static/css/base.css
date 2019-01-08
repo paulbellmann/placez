@@ -8,6 +8,10 @@
     display: none;
 }
 
+.go_button {
+    width: 100%;
+}
+
 body {
     background-color: #F9F9F9;
 }
