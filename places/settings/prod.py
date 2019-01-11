@@ -4,7 +4,7 @@ import dj_database_url
 
 ALLOWED_HOSTS = ['.herokuapp.com']
 
-DEBUG = False
+DEBUG = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
