@@ -6,4 +6,8 @@ from django.contrib import admin
 from .models import Point
 
 # Register your models here.
-admin.site.register(Point)
+class PointAdmin(admin.ModelAdmin):
+    list_display = ('title', 'city', 'street', 'owner')
+
+# Register your models here.
+admin.site.register(Point, PointAdmin)

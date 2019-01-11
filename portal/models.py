@@ -25,8 +25,8 @@ class Point(models.Model):
         else:
             return "redIcon"
 
-    def __str__(self):
-        return "%s, %s" % (self.title, self.street)
+    def __unicode__(self):
+        return u'%s, %s' % (self.title, self.street)
 
 # nearly working ModelForm
 # cant quite figure out why the form is not valid
