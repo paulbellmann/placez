@@ -4,6 +4,10 @@
 
 ![web screenshot](screenshots/screenshot_01.png)
 
+## Test it out
+
+* [Demo](https://placez.herokuapp.com/) – Try this demo and test by yourself. Either create a new user or try demo and pw helloworld
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
@@ -46,10 +50,8 @@ Deploy on [heroku](https://www.heroku.com/) with [django-heroku](https://devcent
 * [Django](https://www.djangoproject.com/) - The web framework for perfectionists with deadlines
 * [pip](https://pypi.org/project/pip/) - The tool for installing Python packages
 * [Bootstrap](https://getbootstrap.com/) - The most popular HTML, CSS, and JavaScript framework
-
-## Test it out
-
-* [Demo](https://placez.herokuapp.com/) – Try this demo and test by yourself. Either create a new user or try demo and pw helloworld
+* [Leaflet](https://leafletjs.com/) - An open-source JavaScript library for mobile-friendly interactive maps
+* [OpenStreetMap](https://www.openstreetmap.org/) - OpenStreetMap is a collaborative project to create a free editable map of the world
 
 ## Authors
 
